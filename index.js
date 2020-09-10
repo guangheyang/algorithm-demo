@@ -1,68 +1,60 @@
-// 链表
-var b = {
-    value: 2,
-    next: null
+var arr = [];
+// 栈结构
+function Stack() {
+    this.arr = []
+    this.push = function(value) {
+        this.arr.push(value)
+    }
+    this.pop = function() {
+        return this.arr.pop()
+    }
 }
 
-var a = {
-    value: 1,
-    next: b
+var stack = new Stack();
+stack.push(1);
+stack.push(2);
+stack.push(3);
+console.log(stack.arr)
+stack.pop()
+console.log(stack.arr)
+
+// 队列结构
+function Queue() {
+    this.arr = [];
+    this.push = function(value) {
+        this.arr.push(value);
+    }
+    this.shift = function() {
+        return this.arr.shift()
+    }
 }
 
-console.log(a.next === b);
+var queue = new Queue();
+queue.push(1);
+queue.push(2);
+queue.push(3);
+console.log(queue.arr)
+queue.shift()
+console.log(queue.arr)
 
-// 创建链表
+// 双向链表
 function Node(value) {
     this.value = value;
-    this.next = null
+    this.next = null;
+    this.pre = null;
 }
 
-var c = new Node(1);
-var d = new Node(2);
-var e = new Node(3);
+var node1 = new Node(1);
+var node2 = new Node(2);
+var node3 = new Node(3);
+var node4 = new Node(4);
+var node5 = new Node(5);
 
-c.next = d;
-d.next = e;
-e.next = null;
-
-console.log(c.next.value)
-
-// 遍历链表
-function bianLink(root) {
-    var temp = root;
-    while(true) {
-        if (temp != null) {
-            console.log(temp.value)
-        } else {
-            break;
-        }
-        temp = temp.next;
-    }
-}
-
-bianLink(c);
-
-// 链表的递归遍历
-function digui_bianLink(root) {
-    if (root == null) return;
-    console.log(root.value, '递归')
-    digui_bianLink(root.next);
-}
-
-digui_bianLink(c)
-
-// 链表的倒置
-function inverse(root) {
-    if (root.next.next == null) { // 当前节点是倒数第二个节点
-        root.next.next = root; //让最后一个节点指向自己（倒数第二个节点）
-        return root.next;
-    } else {
-        var result = inverse(root.next);
-        root.next.next = root;
-        root.next = null;
-        return result;
-    }
-}
-
-var newRoot = inverse(c);
-digui_bianLink(newRoot);
+node1.next = node2;
+node2.pre = node1;
+node2.next = node3;
+node3.pre = node2;
+node3.next = node4;
+node4.pre = node3;
+node4.next = node5;
+node4.pre = node4;
