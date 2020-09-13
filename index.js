@@ -1,60 +1,79 @@
-var arr = [];
-// 栈结构
-function Stack() {
-    this.arr = []
-    this.push = function(value) {
-        this.arr.push(value)
-    }
-    this.pop = function() {
-        return this.arr.pop()
-    }
-}
+// 二维数据结构（图）
 
-var stack = new Stack();
-stack.push(1);
-stack.push(2);
-stack.push(3);
-console.log(stack.arr)
-stack.pop()
-console.log(stack.arr)
+// function Node(value) {
+//     this.value = value;
+//     this.neighbor = []
+// }
 
-// 队列结构
-function Queue() {
-    this.arr = [];
-    this.push = function(value) {
-        this.arr.push(value);
-    }
-    this.shift = function() {
-        return this.arr.shift()
-    }
-}
+// var a = new Node('a');
+// var b = new Node('b');
+// var c = new Node('c');
+// var d = new Node('d');
+// var e = new Node('e');
+// var f = new Node('f');
 
-var queue = new Queue();
-queue.push(1);
-queue.push(2);
-queue.push(3);
-console.log(queue.arr)
-queue.shift()
-console.log(queue.arr)
 
-// 双向链表
+// a.neighbor.push(b);
+// a.neighbor.push(c);
+// a.neighbor.push(f);
+
+// b.neighbor.push(a);
+// b.neighbor.push(d);
+// b.neighbor.push(e);
+
+// c.neighbor.push(a);
+
+// d.neighbor.push(b);
+
+// b.neighbor.push(b);
+
+// 二叉树的前序遍历
 function Node(value) {
-    this.value = value;
-    this.next = null;
-    this.pre = null;
+    this.value = value
+    this.left = null
+    this.right = null
 }
 
-var node1 = new Node(1);
-var node2 = new Node(2);
-var node3 = new Node(3);
-var node4 = new Node(4);
-var node5 = new Node(5);
+var a = new Node('a')
+var b = new Node('b')
+var c = new Node('c')
+var d = new Node('d')
+var e = new Node('e')
+var f = new Node('f')
+var g = new Node('g')
 
-node1.next = node2;
-node2.pre = node1;
-node2.next = node3;
-node3.pre = node2;
-node3.next = node4;
-node4.pre = node3;
-node4.next = node5;
-node4.pre = node4;
+a.left = c
+a.right = b
+c.left = f
+c.right = g
+b.left = d
+b.right = e
+
+function f1(root) {
+    if (root === null) return;
+    console.log(root.value)
+    f1(root.left)
+    f1(root.right)
+}
+f1(a)
+
+console.log('*****************')
+// 中序遍历
+function f1(root) {
+    if (root === null) return;
+    f1(root.left)
+    console.log(root.value)
+    f1(root.right)
+}
+f1(a)
+
+
+console.log('*****************')
+// 后序遍历
+function f1(root) {
+    if (root === null) return;
+    f1(root.left)
+    f1(root.right)
+    console.log(root.value)
+}
+f1(a)
