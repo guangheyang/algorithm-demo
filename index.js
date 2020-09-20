@@ -17,14 +17,17 @@ b.childs.push(d);
 b.childs.push(e);
 
 // 树的深度优先搜索
-function deepSearch(root) {
-    if (root == null) return;
+function deepSearch(root, target) {
+    if (root == null) return false;
+    if (root.value == target) return true;
+    var result = false;
     console.log(root.value);
     for (var i = 0; i < root.childs.length; i++) {
-        deepSearch(root.childs[i]);
+        result |= deepSearch(root.childs[i], target);
     }
+    return result ? true : false;
 }
-deepSearch(a);
+console.log(deepSearch(a, 'c'));
 
 // 树的广度优先搜索
 function range(root, target) {
