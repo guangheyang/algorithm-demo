@@ -1,52 +1,61 @@
-function Node(value) {
-    this.value = value;
-    this.neighbor = [];
-}
+// 动态规划之斐波那契数列
+// 0, 1, 1, 2, 3, 5, 8, 13, 21, 44,....
+// 给出第n位，求第n位的值？
 
-var a = new Node('a');
-var b = new Node('b');
-var c = new Node('c');
-var d = new Node('d');
-var e = new Node('e');
-
-a.neighbor.push(b);
-a.neighbor.push(c);
-b.neighbor.push(a);
-b.neighbor.push(c);
-b.neighbor.push(d);
-c.neighbor.push(a);
-c.neighbor.push(b);
-c.neighbor.push(d);
-d.neighbor.push(b);
-d.neighbor.push(c);
-d.neighbor.push(e);
-e.neighbor.push(d);
-
-// 图的深度优先搜索
-function deepSearch(node, target, path) {
-    if (node == null) return false;
-    if (path.indexOf(node) > -1) return false;
-    if (node.value == target) return true;
-    path.push(node);
-    var result = false;
-    for (var i = 0; i < node.neighbor.length; i++) {
-        result |= deepSearch(node.neighbor[i], target, path);
+function fibo(n) {
+    if (n <= 0) return -1;
+    if (n == 1) return 0;
+    if (n == 2) return 1;
+    var a = 0;
+    var b = 1;
+    var c = 0;
+    for (var i = 3; i <= n; i++) {
+        c = a + b;
+        a = b;
+        b = c;
     }
-    return result ? true : false;
+    return c;
 }
-console.log(deepSearch(a, 'c', []));
 
-// 图的广度优先搜索
-function range(node, target, path) {
-    if (node == null || node.length == 0) return false;
-    if (path.indexOf(node) > -1) return false;
-    var neighbor = [];
-    for (var i = 0; i < node.length; i++) {
-        if (path.indexOf(node[i]) > -1) continue;
-        path.push(node[i]);
-        if (node[i].value == target) return true;
-        else neighbor = neighbor.concat(node[i].neighbor)
-    }
-    return range(neighbor, target, path);
+console.log(fibo(5));
+
+function fibo2(n) {
+    if (n <= 0) return -1;
+    if (n == 1) return 0;
+    if (n == 2) return 1;
+    return fibo2(n - 1) + fibo2(n - 2);
 }
-console.log(range([a], 'n', []))
+console.log(fibo2(5));
+
+// 动态规划之青蛙跳台阶问题
+// 一只青蛙，一次只能跳一级台阶或两级台阶
+// 这只青蛙跳上n级台阶有多少种跳法
+
+// 思路：如果这只青蛙，跳上第n级台阶，那么最后一次跳跃之前，它一定在n-1级台阶或n-2级台阶
+// n-1与n-2的跳法
+
+function jump(n) {
+    if (n <= 0) return -1;
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    return jump(n - 1) + jump(n - 2);
+}
+
+console.log(jump(5));
+
+// 变态青蛙跳台阶问题
+// 一只青蛙，一次只能跳一级台阶、两级台阶或n级台阶
+// 这只青蛙跳上n级台阶有多少种跳法
+
+function btJump(n) {
+    if (n <= 0) return -1;
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    var result = 0;
+    for (var i = 1; i < n; i++) {
+        result += btJump(n - 1);
+    }
+    return result + 1;
+}
+
+console.log(btJump(5));
