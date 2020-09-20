@@ -1,6 +1,6 @@
 function Node(value) {
     this.value = value;
-    this.childs = [];
+    this.neighbor = [];
 }
 
 var a = new Node('a');
@@ -8,35 +8,45 @@ var b = new Node('b');
 var c = new Node('c');
 var d = new Node('d');
 var e = new Node('e');
-var f = new Node('f');
 
-a.childs.push(c);
-a.childs.push(f);
-a.childs.push(b);
-b.childs.push(d);
-b.childs.push(e);
+a.neighbor.push(b);
+a.neighbor.push(c);
+b.neighbor.push(a);
+b.neighbor.push(c);
+b.neighbor.push(d);
+c.neighbor.push(a);
+c.neighbor.push(b);
+c.neighbor.push(d);
+d.neighbor.push(b);
+d.neighbor.push(c);
+d.neighbor.push(e);
+e.neighbor.push(d);
 
-// 树的深度优先搜索
-function deepSearch(root, target) {
-    if (root == null) return false;
-    if (root.value == target) return true;
+// 图的深度优先搜索
+function deepSearch(node, target, path) {
+    if (node == null) return false;
+    if (path.indexOf(node) > -1) return false;
+    if (node.value == target) return true;
+    path.push(node);
     var result = false;
-    console.log(root.value);
-    for (var i = 0; i < root.childs.length; i++) {
-        result |= deepSearch(root.childs[i], target);
+    for (var i = 0; i < node.neighbor.length; i++) {
+        result |= deepSearch(node.neighbor[i], target, path);
     }
     return result ? true : false;
 }
-console.log(deepSearch(a, 'c'));
+console.log(deepSearch(a, 'c', []));
 
-// 树的广度优先搜索
-function range(root, target) {
-    if (root == null || root.length == 0) return false;
-    var childs = [];
-    for (var i = 0; i < root.length; i++) {
-        if (root[i].value == target) return true;
-        else childs = childs.concat(root[i].childs)
+// 图的广度优先搜索
+function range(node, target, path) {
+    if (node == null || node.length == 0) return false;
+    if (path.indexOf(node) > -1) return false;
+    var neighbor = [];
+    for (var i = 0; i < node.length; i++) {
+        if (path.indexOf(node[i]) > -1) continue;
+        path.push(node[i]);
+        if (node[i].value == target) return true;
+        else neighbor = neighbor.concat(node[i].neighbor)
     }
-    return range(childs, target);
+    return range(neighbor, target, path);
 }
-console.log(range([a], 'c'))
+console.log(range([a], 'n', []))
