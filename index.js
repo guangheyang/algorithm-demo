@@ -6,13 +6,16 @@ function Node(value) {
     this.right = null;
 }
 
-var node2 = new Node('2');
-var node5 = new Node('5');
-var node3 = new Node('3');
+var node8 = new Node('8');
+var node7 = new Node('7');
 var node6 = new Node('6');
-node2.right = node5;
-node5.left = node3;
-node5.right = node6;
+var node5 = new Node('5');
+var node2 = new Node('2');
+
+node8.left = node7;
+node7.left = node6;
+node6.left = node5;
+node5.left = node2;
 
 // 获取二叉树深度
 function getDeep(root) {
@@ -68,16 +71,79 @@ function change(root) {
     var leftDeep = getDeep(root.left);
     var rightDeep = getDeep(root.right);
     if (Math.abs(leftDeep - rightDeep) < 2) {
-        return true;
+        return root;
     } else if (leftDeep > rightDeep) {
-        return rightRotate(root);
+        var changeTreeDeep = getDeep(root.left.right);
+        var noChangeTreeDeep = getDeep(root.left.left);
+        if (changeTreeDeep > noChangeTreeDeep) {
+            root.left = leftRotate(root.left);
+        }
+        var newRoot = rightRotate(root);
+        newRoot.right = change(newRoot.right);
+        newRoot = change(newRoot);
+        return newRoot;
     } else {
-        return leftRotate(root);
+        var changeTreeDeep = getDeep(root.right.left);
+        var noChangeTreeDeep = getDeep(root.right.right);
+        if (changeTreeDeep > noChangeTreeDeep) {
+            root.right = rightRotate(root.right);
+        }
+        var newRoot = leftRotate(root);
+        newRoot.left = change(newRoot.left);
+        newRoot = change(newRoot);
+        return newRoot;
+    }
+    return root;
+}
+
+function addNode(root, num) {
+    if (root == null) return;
+    if (root.value == num) return;
+    if (root.value < num) {
+        if (root.right == null) root.right = new Node(num);
+        else addNode(root.right, num);
+    } else {
+        if (root.left == null) root.left = new Node(num);
+        else addNode(root.left, num);
     }
 }
 
-console.log(isBalance(node2));
+function buildSearchTree(arr) {
+    if (arr == null || arr.length == 0) return null;
+    var root = new Node(arr[0]);
+    for (var i = 1; i < arr.length; i++) {
+        addNode(root, arr[i])
+    }
+    return root;
+}
 
-var newRoot = change(node2);
+var arr = [];
+for (var i = 0; i < 10000; i++) {
+    arr.push(Math.floor(Math.random()*10000))
+}
 
-console.log(isBalance(newRoot));
+var num2 = 0;
+function searchByTree(root, target) {
+    if (root == null) return false;
+    num2 += 1;
+    if (root.value == target) return true;
+    if (root.value > target) return searchByTree(root.left, target);
+    else return searchByTree(root.right, target);
+}
+
+var root = buildSearchTree(arr);
+
+console.log(searchByTree(root, 1000));
+console.log(num2);
+console.log(getDeep(root));
+
+var newRoot = change(root);
+num2 = 0;
+console.log(searchByTree(newRoot, 1000));
+console.log(num2);
+console.log(getDeep(newRoot));
+// console.log(isBalance(node8));
+
+// var newRoot = change(node8);
+
+// console.log(isBalance(newRoot));
